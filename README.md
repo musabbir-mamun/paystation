@@ -1,1 +1,1 @@
-# Custom-Payment-Gateway-WooCommerce
+# Paystation Payment Gateway
