@@ -6,10 +6,10 @@ jQuery(document).ready(function ($) {
     const ps_password = document.getElementById("ps_password").value;
     const payment_url = document.getElementById("payment_url").value;
     const cartTotal = document.getElementById("cartTotal").value;
-    const cust_name = document.getElementById("billing_first_name").value;
+    const cust_name = document.getElementById("billing_first_name")?.value || 'N/A';
     const cust_phone = document.getElementById("billing_phone").value;
     const cust_email = document.getElementById("billing_email").value;
-    const cust_address = document.getElementById("billing_address_1").value;
+    const cust_address = document.getElementById("billing_address_1")?.value || 'N/A';
     const url = baseurl + "/wp-admin/admin-ajax.php";
 
     const obj = {
