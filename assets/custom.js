@@ -1,5 +1,7 @@
 jQuery(document).ready(function ($) {
   $(document.body).on("click", "button#track-order-button", function () {
+    const payment_method = $('input[name="payment_method"]:checked').val();
+    // console.log("payment_method", payment_method);
     let errorElement = "";
     const baseurl = document.getElementById("baseurl").value;
     const ps_merchant_id = document.getElementById("ps_merchant_id").value;
@@ -26,8 +28,10 @@ jQuery(document).ready(function ($) {
     const demo = $(".checkout").serializeArray();
 
     $.post(url, { action: "complete_order", data: demo }, function (response) {
-      if (response.order_id > 0 && response.returnURL) {
+      if (response.order_id > 0 && payment_method === 'paystation_payment_gateway' && response.returnURL) {
         makePayment(response.order_id, response.returnURL);
+      } else if (response.order_id > 0 && payment_method === 'cod') {
+        window.open(response.returnURL, "_self");
       } else {
         const message = "Failed to complete order";
         errorElement =
@@ -75,13 +79,13 @@ jQuery(document).ready(function ($) {
       }
     }
   });
-  $(document.body).on("change", "input[name=payment_method]", function () {
-    if (this.value == "paystation_payment_gateway") {
-      $("#place_order").hide();
-      $("#track-order-button").show();
-    } else {
-      $("#place_order").show();
-      $("#track-order-button").hide();
-    }
-  });
+  // $(document.body).on("change", "input[name=payment_method]", function () {
+  //   if (this.value == "paystation_payment_gateway") {
+  //     $("#place_order").hide();
+  //     $("#track-order-button").show();
+  //   } else {
+  //     $("#place_order").show();
+  //     $("#track-order-button").hide();
+  //   }
+  // });
 });

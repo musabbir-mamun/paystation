@@ -27,19 +27,19 @@ if (!in_array('woocommerce/woocommerce.php', $active_plugins)) {
 }
 
 // Add custom place order button
-function add_button_after_place_order()
-{
-	echo '<button type="button" class="button alt wp-element-button" id="track-order-button" style="display:none;">Place order</button>';
-}
-add_action('woocommerce_review_order_after_submit', 'add_button_after_place_order');
+// function add_button_after_place_order()
+// {
+// 	echo '<button type="button" class="button alt wp-element-button" id="track-order-button" style="display:none;">Place order</button>';
+// }
+// add_action('woocommerce_review_order_after_submit', 'add_button_after_place_order');
 
 // Remove default Place order button
-// add_filter('woocommerce_order_button_html', 'remove_order_button_html');
-// function remove_order_button_html($button)
-// {
-// 	$button = '';
-// 	return $button;
-// }
+add_filter('woocommerce_order_button_html', 'remove_order_button_html');
+function remove_order_button_html($button)
+{
+	$button = '<button type="button" class="button alt wp-element-button" id="track-order-button">Place order</button>';
+	return $button;
+}
 
 // plugin directory
 define('WOO_CUSTOM_PAYMENT_DIR', plugin_dir_path(__FILE__));
@@ -134,7 +134,7 @@ function complete_order_callback()
 add_action('woocommerce_thankyou', 'add_thank_you_message');
 function add_thank_you_message($order_id)
 {
-	$payment_status = $_GET['status'];
+	$payment_status = $_GET['status'] ?? 'Pending payment';
 	$order = wc_get_order($order_id);
 	if ($payment_status == 'Successful') {
 		$order->update_status('completed');
